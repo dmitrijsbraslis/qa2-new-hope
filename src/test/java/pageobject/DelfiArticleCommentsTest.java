@@ -5,83 +5,46 @@ import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import pageobject.pages.ArticlePage;
 import pageobject.pages.BaseFunc;
 import pageobject.pages.HomePage;
 
-import java.util.List;
-
 public class DelfiArticleCommentsTest {
     private final Logger LOGGER = LogManager.getLogger(this.getClass());
+    private final int ARTICLE_ID = 5;
 
-    private WebDriver driver;
+    private BaseFunc baseFunc;
 
     @Test
     public void titleAndCommentsCountCheck() {
         LOGGER.info("This test is checking titles and comments count on home/article/comments pages");
 
-        BaseFunc baseFunc = new BaseFunc();
-        baseFunc.openPage("http://delfi.lv");
+        baseFunc = new BaseFunc();
+        baseFunc.openPage("delfi.lv");
 
         //---------------------------HOME PAGE-----------------------------------------------------------
         HomePage homePage = new HomePage(baseFunc);
         homePage.acceptCookies();
 
-//        List<WebElement> articles = driver.findElements(HOME_PAGE_ARTICLE);
-//        WebElement article = articles.get(4);
+        String homePageTitle = homePage.getTitle(ARTICLE_ID);
+        int homePageCommentsCount = homePage.getCommentsCount(ARTICLE_ID);
 
-        LOGGER.info("Getting article title and comments count");
-//        String homePageTitle = article.findElement(HOME_PAGE_TITLE).getText();
-//        int homePageCommentsCount = getCommentsCount(article, HOME_PAGE_COMMENTS);
-//        LOGGER.info("Title is: " + homePageTitle + " and comments count is: " + homePageCommentsCount);
-
-        LOGGER.info("Opening article");
-//        article.findElement(HOME_PAGE_TITLE).click();
+        ArticlePage articlePage = homePage.openArticle(ARTICLE_ID);
 
         //-------------------------ARTICLE PAGE----------------------------------------------------------
-//        String articlePageTitle = driver.findElement(ARTICLE_PAGE_TITLE).getText();
-//        int articlePageCommentsCount = getCommentsCount(ARTICLE_PAGE_COMMENTS);
+        String articlePageTitle = articlePage.getTitle();
+        int articlePageCommentsCount = articlePage.getCommentsCount();
 
-//        Assertions.assertEquals(homePageTitle, articlePageTitle, "Wrong title!");
-//        Assertions.assertEquals(homePageCommentsCount, articlePageCommentsCount, "Wrong comments count!");
+        Assertions.assertEquals(homePageTitle, articlePageTitle, "Wrong title!");
+        Assertions.assertEquals(homePageCommentsCount, articlePageCommentsCount, "Wrong comments count!");
 
+        articlePage.openCommentsPage();
         //-------------------------COMMENTS PAGE---------------------------------------------------------
         //...
     }
 
-    private int getCommentsCount(By locator) {
-        int commentsCount = 0;
-
-        if (!driver.findElements(locator).isEmpty()) {
-            commentsCount = removeBrackets(driver.findElement(locator));
-        }
-
-        return commentsCount;
-    }
-
-    private int getCommentsCount(WebElement we, By locator) {
-        int commentsCount = 0;
-
-        if (!we.findElements(locator).isEmpty()) {
-            commentsCount = removeBrackets(we.findElement(locator));
-        }
-
-        return commentsCount;
-    }
-
-    private int removeBrackets(WebElement we) {
-        String commentsCountText = we.getText();
-        commentsCountText = commentsCountText.substring(1, commentsCountText.length() - 1); // (36) -> 36 (String)
-        return Integer.parseInt(commentsCountText); // 36 (String) -> 36 (int)
-    }
-
     @AfterEach
     public void closeBrowser() {
-        driver.close();
+        baseFunc.closeBrowser();
     }
 }
