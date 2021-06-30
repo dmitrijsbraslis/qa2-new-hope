@@ -11,5 +11,5 @@ Feature: Testing weather endpoint
 
 #    Then lon is 145.77
 #    And lat is -16.92
-    And base is "stations"
+#    And base is "stations"
 #    ...
