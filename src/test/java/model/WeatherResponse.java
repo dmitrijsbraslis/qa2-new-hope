@@ -9,6 +9,7 @@ import java.util.List;
 public class WeatherResponse {
     private Coord coord;
     private String base;
+    private Sys sys;
 
     @JsonProperty("weather")
     private List<Weather> weathers;
@@ -27,6 +28,14 @@ public class WeatherResponse {
 
     public void setBase(String base) {
         this.base = base;
+    }
+
+    public Sys getSys() {
+        return sys;
+    }
+
+    public void setSys(Sys sys) {
+        this.sys = sys;
     }
 
     public List<Weather> getWeathers() {
