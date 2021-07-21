@@ -1,13 +1,13 @@
-package pageobject;
+package pageobject.delfi;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import pageobject.pages.ArticlePage;
-import pageobject.pages.BaseFunc;
-import pageobject.pages.HomePage;
+import pageobject.delfi.pages.ArticlePage;
+import pageobject.BaseFunc;
+import pageobject.delfi.pages.HomePage;
 
 public class DelfiArticleCommentsTest {
     private final Logger LOGGER = LogManager.getLogger(this.getClass());
