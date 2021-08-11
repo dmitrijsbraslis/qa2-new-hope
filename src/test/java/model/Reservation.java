@@ -1,5 +1,7 @@
 package model;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
 public class Reservation {
     private long id;
     private String name;
@@ -9,7 +11,7 @@ public class Reservation {
     private int bugs;
     private String discount;
     private int children;
-    private int flight;
+    private String flight;
     private int adults;
     private int seat;
     private String fullDate;
@@ -27,7 +29,7 @@ public class Reservation {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name.equals("random") ? RandomStringUtils.randomAlphabetic(10) : name;
     }
 
     public String getSurname() {
@@ -79,10 +81,16 @@ public class Reservation {
     }
 
     public int getFlight() {
-        return flight;
+        return flight.equals("none") ? 0 : Integer.parseInt(flight);
+
+//        if (flight.equals("none")) {
+//            return 0;
+//        }
+//
+//        return Integer.parseInt(flight);
     }
 
-    public void setFlight(int flight) {
+    public void setFlight(String flight) {
         this.flight = flight;
     }
 

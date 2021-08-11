@@ -33,6 +33,7 @@ public class SeatsPage {
     }
 
     private WebElement findSeat(int nr) {
+        baseFunc.waitForElementsCountToBeMoreThan(SEAT, 10);
         for (WebElement we : baseFunc.findElements(SEAT)) {
             if (Integer.parseInt(we.getText()) == nr) {
                 return we;

@@ -1,9 +1,11 @@
 package stepdefs;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import model.Reservation;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.WebElement;
 import pageobject.BaseFunc;
@@ -11,6 +13,7 @@ import pageobject.tickets.pages.HomePage;
 import pageobject.tickets.pages.PassengerInfoPage;
 import pageobject.tickets.pages.SeatsPage;
 import pageobject.tickets.pages.SuccessPage;
+import requesters.TicketsRequester;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -24,6 +27,7 @@ public class TicketsStepDefs {
     private PassengerInfoPage infoPage;
     private SeatsPage seatsPage;
     private SuccessPage successPage;
+    private List<Reservation> reservations;
 
     @Given("flight from {string} to {string}")
     public void set_airports(String from, String to) {
@@ -105,5 +109,28 @@ public class TicketsStepDefs {
     @Then("success message appears")
     public void check_success_msg() {
         Assertions.assertEquals("Thank You for flying with us!", successPage.getMessage(), "Can't find success message!");
+    }
+
+    @When("we are requesting reservations via API")
+    public void request_reservations() throws JsonProcessingException {
+        TicketsRequester requester = new TicketsRequester();
+        reservations = requester.getReservations();
+    }
+
+    @Then("our reservation with correct data appears")
+    public void check_reservation() {
+        Reservation actual = null;
+
+        for (Reservation r : reservations) {
+            if (r.getName().equals(given.getName())) {
+                actual = r;
+                break;
+            }
+        }
+
+        Assertions.assertNotNull(actual, "Can't find reservation");
+
+        Assertions.assertEquals(given.getSurname(), actual.getSurname(), "Wrong Surname");
+        Assertions.assertEquals(Integer.parseInt(StringUtils.substringBefore(given.getFullDate(), "-")), actual.getFlight(), "Error message");
     }
 }

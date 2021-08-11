@@ -3,7 +3,7 @@ Feature: Tickets reservation service check
   Scenario: Checking reservation data via API
     Given flight from "RIX" to "SVO"
     And passenger info:
-      | name             | Dmitrijs   |
+      | name             | random     |
       | surname          | The Tester |
       | discount         | CCCCCC     |
       | passengers count | 4          |
@@ -31,7 +31,7 @@ Feature: Tickets reservation service check
 
     Then success message appears
 
-#    When we are requesting reservations via API
-#
-#    Then our reservation with correct data appears
+    When we are requesting reservations via API
+
+    Then our reservation with correct data appears
 

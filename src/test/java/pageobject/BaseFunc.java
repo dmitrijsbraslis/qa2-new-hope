@@ -99,4 +99,9 @@ public class BaseFunc {
     public void type(By locator, int text) {
         type(locator, String.valueOf(text));
     }
+
+    public void waitForElementsCountToBeMoreThan(By locator, int count) {
+        LOGGER.info("Waiting for elements count to be " + count);
+        wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(locator, count));
+    }
 }
